@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <title>D-Day</title>
+  <link href="./style.css" rel="stylesheet" />
+  <script>
+    const container = document.querySelector('.d-day-container');
+    const newContainer = document.querySelector('.d-day-message');
+
+    const dateFormMaker = function () {
+      const inputYear = document.querySelector('#target-year-input').value;
+      const inputMonth = document.querySelector('#target-month-input').value;
+      const inputDate = document.querySelector('#target-date-input').value;
+
+      // const dateFormat = inputYear + '-' + inputMonth + '-' + inputDate;
+      const dateFormat = `${inputYear}-${inputMonth}-${inputDate}`;
+      return dateFormat;
+    };
+
+    const countMaker = function () {
+      const dateFormat = dateFormMaker();
+      const nowDate = new Date();
+      const targetDate = new Date(dateFormat);
+      const remaining = (targetDate - nowDate) / 1000;
+      console.log(container);
+      console.log(newContainer);
+
+      if (remaining <= 0) {
+        // console.log('타이머가 종료되었습니다.');
+        container.style.display = 'none';
+        newContainer.innerHTML = `<h3>타이머가 종료되었습니다.</h3>`;
+        newContainer.style.display = 'flex';
+        return;
+      } else if (isNaN(remaining)) {
+        // console.log('유효하지 않은 시간대입니다.');
+        container.style.display = 'none';
+        newContainer.innerHTML = `<h3>유효하지 않은 시간대입니다.</h3>`;
+        newContainer.style.display = 'flex';
+        return;
+      }
+
+      const remainingDate = Math.floor(remaining / 3600 / 24);
+      const remainingHour = Math.floor(remaining / 3600) % 24;
+      const remainingMin = Math.floor(remaining / 60) % 60;
+      const remainingSec = Math.floor(remaining) % 60;
+
+      const days = document.getElementById('days');
+      const hours = document.getElementById('hours');
+      const min = document.getElementById('min');
+      const sec = document.getElementById('sec');
+
+      days.textContent = remainingDate;
+      hours.textContent = remainingHour;
+      min.textContent = remainingMin;
+      sec.textContent = remainingSec;
+
+      console.log(remainingDate, remainingHour, remainingMin, remainingSec);
+    };
+  </script>
+</head>
+<body>
+  <h1>D-Day</h1>
+
+  <div class="d-day-container">
+    <div class="d-day-child-container">
+      <span id="days">0</span>
+      <span>일</span>
+    </div>
+    <div class="d-day-child-container">
+      <span id="hours">0</span>
+      <span>시간</span>
+    </div>
+    <div class="d-day-child-container">
+      <span id="min">0</span>
+      <span>분</span>
+    </div>
+    <div class="d-day-child-container">
+      <span id="sec">0</span>
+      <span>초</span>
+    </div>
+  </div>
+
+  <div class="d-day-message"></div>
+
+  <div class="target-selector">
+    <input id="target-year-input" size="5" /> -
+    <input id="target-month-input" size="5" /> -
+    <input id="target-date-input" size="5" />
+  </div>
+  <button onclick="countMaker()" class="start-btn">카운트다운 시작</button>
+</body>
+</html>
